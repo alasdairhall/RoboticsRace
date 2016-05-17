@@ -12,7 +12,7 @@ int orientation = 0; // 0 = North, 1 = East, 2 = South, 3 = West
 
 int xPos = 1, yPos = 0;
 int xTarget = 4, yTarget = 4;
-int gridSize= 185; // 60 cm in ticks
+int gridSize = 123; // 60 cm in ticks
 int xTicks = 0, yTicks = 0;
 
 
