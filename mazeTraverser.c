@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "logging.h"
+#include "sensing.h"
 
 // int visited[][] = {
 // 	{-1,1,-1,-1,-1},
