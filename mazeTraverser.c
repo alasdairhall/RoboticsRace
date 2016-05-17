@@ -120,14 +120,22 @@ void moveSquare() {
 	moveForward();
 }
 
-int main() {
-	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
-	yPos++;
-	moveForwardSquare(gridSize);
-	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
-
+void goToTarget(int x, int y){
+	xTarget = x; yTarget = y;
 	while(!(xPos == xTarget && yPos == yTarget)) {
 		moveSquare();
 	}
+}
+
+int main() {
+	goToTarget(1,4);
+	goToTarget(4,4);
+	goToTarget(4,1);
+	goToTarget(1,0);
+	goToTarget(4,4);
+	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
+	//yPos++;
+	moveForwardSquare(gridSize);
+	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
 	return 0;
 }
