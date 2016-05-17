@@ -16,7 +16,6 @@ int gridSize= 185; // 60 cm in ticks
 int xTicks = 0, yTicks = 0;
 
 
-
 int minMove(int moves[]) {
 	int min; // The best direction to rotate to. -1 to rotate left, 0 for no rotation, 1 to rotate right, 2 to 180
 	if(moves[0] <= moves[1] && moves[0] <= moves[2]) {

@@ -31,7 +31,8 @@ void moveSquare(int length)
   drive_goto(length,length);
 }
 
-int getIR() {
+int getIR()
+{
     irLeft = 0;
     irRight = 0;
     for (int dacVal = 0; dacVal < 160; dacVal += 8) {
