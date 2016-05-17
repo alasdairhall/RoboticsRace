@@ -26,7 +26,7 @@ void turn(int direction)
   }
 }
 
-void moveSquare(int length)
+void moveForwardSquare(int length)
 {
   drive_goto(length,length);
 }
@@ -50,7 +50,7 @@ int frontChecker()
 {
   int result;
   distance = ping_cm(8);
-  if (distance < 10)
+  if (distance < 20)
   {
     return 1;
   }
