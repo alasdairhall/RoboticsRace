@@ -12,6 +12,10 @@ int orientation = 0; // 0 = North, 1 = East, 2 = South, 3 = West
 
 int xPos = 1, yPos = 0;
 int xTarget = 4, yTarget = 4;
+int gridSize= 185; // 60 cm in ticks
+int xTicks = 0, yTicks = 0;
+
+
 
 int minMove(int moves[]) {
 	int min; // The best direction to rotate to. -1 to rotate left, 0 for no rotation, 1 to rotate right, 2 to 180
@@ -69,6 +73,7 @@ int getBestMove(int clear[]) {
 }
 
 void rotateRobot(int rotation) {
+	turn(rotation);
 	orientation = (orientation + rotation) % 4;
 	if(orientation < 0) {
 		orientation += 4;
@@ -76,12 +81,17 @@ void rotateRobot(int rotation) {
 }
 
 void moveForward() {
+	moveForwardSquare(gridSize);
 	if(orientation % 2 == 0) {
-		yPos = yPos + (1 - orientation);
+		yTicks += (gridSize - orientation*gridSize);
+		yPos = yTicks / gridSize;
+		// yPos = yPos + (1 - orientation);
 	} else {
-		xPos = xPos + (2 - orientation);
+		xTicks += (2*gridSize - orientation*gridSize);
+		xPos = (xTicks / gridSize) + 1;
+		// xPos = xPos + (2 - orientation);
 	}
-	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos); // this is purely for trsting purposes
+	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos); // this is purely for testing purposes
 }
 
 void moveSquare() {

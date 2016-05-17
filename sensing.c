@@ -26,9 +26,9 @@ void turn(int direction)
   }
 }
 
-void moveSquare(int direction)
+void moveSquare(int length)
 {
-  drive_goto(123,123); //40CM
+  drive_goto(length,length);
 }
 
 int getIR() {
