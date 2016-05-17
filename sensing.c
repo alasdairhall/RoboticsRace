@@ -26,7 +26,7 @@ void turn(int direction)
   }
 }
 
-void moveSquare(int length)
+void moveForwardSquare(int length)
 {
   drive_goto(length,length);
 }
