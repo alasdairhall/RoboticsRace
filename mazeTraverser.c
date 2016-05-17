@@ -95,15 +95,6 @@ void moveForward() {
 	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos); // this is purely for testing purposes
 }
 
-void moveSquare() {
-	// Checks for walls in all three directions
-	int clear[] = {1,1,1}; //isclean(); // array storing whether or not there is a wall to the left, ahead and right respectively
-	isClean(clear);
-	int bestMove = getBestMove(clear);
-	rotateRobot(bestMove);
-	moveForward();
-}
-
 void isClean(int[] walls) {
 	// Checks if the blocks around are clear or not.
 	if (frontChecker() == 1)
@@ -120,10 +111,19 @@ void isClean(int[] walls) {
 	}
 }
 
+void moveSquare() {
+	// Checks for walls in all three directions
+	int clear[] = {1,1,1}; //isclean(); // array storing whether or not there is a wall to the left, ahead and right respectively
+	isClean(clear);
+	int bestMove = getBestMove(clear);
+	rotateRobot(bestMove);
+	moveForward();
+}
 
 int main() {
 	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
 	yPos++;
+	moveForwardSquare(gridSize);
 	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
 
 	while(!(xPos == xTarget && yPos == yTarget)) {
