@@ -10,6 +10,22 @@
 // 	{-1,0,0,0,0}
 // };
 
+void phase1(int x, int y){
+	xTarget = x;
+	yTarget = y;
+	if (leftChecker == 1) {
+		turn(-1);
+		moveForwardSquare();
+	}
+	else if (frontChecker == -1) {
+		moveForwardSquare();
+	}
+	else{
+		turn(1);
+		moveForwardSquare();
+	}
+}
+
 int orientation = 0; // 0 = North, 1 = East, 2 = South, 3 = West
 
 int xPos = 1, yPos = 0;
