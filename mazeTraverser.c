@@ -14,7 +14,7 @@ int xPos = 1, yPos = 0;
 int xTarget = 4, yTarget = 4;
 
 int minMove(int moves[]) {
-	int min; // The best direction to rotate to. -1 to rotate left, 0 for no rotation, 1 to rotate left, 2 to 180
+	int min; // The best direction to rotate to. -1 to rotate left, 0 for no rotation, 1 to rotate right, 2 to 180
 	if(moves[0] <= moves[1] && moves[0] <= moves[2]) {
 		min = -1;
 	} else if(moves[1] <= moves[0] && moves[1] <= moves[2]) {
@@ -49,7 +49,7 @@ int inBoundMove(int pos, int change, int target) {
 
 void getMoves(int moves[]) {
 	int even = orientation % 2 == 0;
-	
+
 	if(even) {
 		moves[0] = inBoundMove(xPos,(orientation - 1),xTarget); // Different orientations will mean
 		moves[1] = inBoundMove(yPos,(1 - orientation),yTarget); // that the way the x and y pos change
@@ -86,11 +86,29 @@ void moveForward() {
 
 void moveSquare() {
 	// Checks for walls in all three directions
-	int clear[] = {1,1,1}; // array storing whether or not there is a wall to the left, ahead and right respectively
+	int clear[] = {1,1,1}; //isclean(); // array storing whether or not there is a wall to the left, ahead and right respectively
+	isClean(clear);
 	int bestMove = getBestMove(clear);
 	rotateRobot(bestMove);
 	moveForward();
 }
+
+void isClean(int[] walls) {
+	// Checks if the blocks around are clear or not.
+	if (frontChecker() == 1)
+	{
+				walls[1] = 0;
+	}
+	if (rightChecker() == 1)
+	{
+		walls[2] = 0;
+	}
+	if (leftChecker() == 1)
+	{
+		walls[0] = 0;
+	}
+}
+
 
 int main() {
 	printf("Orientation: %d\tPosition: (%d, %d)\n", orientation, xPos, yPos);
