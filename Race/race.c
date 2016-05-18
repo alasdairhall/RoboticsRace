@@ -162,8 +162,9 @@ int main() {
 	//goToTarget(4,4);
 	//goToTarget(4,1);
 	//goToTarget(1,0);
-  setSpeed(80);
-  phase1();
+  
+  //setSpeed(80);
+  //phase1();
   blink();
   goToTarget(4,4);
 }
