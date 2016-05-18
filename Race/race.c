@@ -20,9 +20,14 @@ void phase1(){
   while(!(xPos == 1 && yPos == 0)){
     print("xPos: %d, yPos: %d\n",xPos,yPos);
     if (leftChecker1() == 0) {
+     frontChecker1();
+     rightChecker1();
+     rotateRobot(2);
 		moveForward();
 	}
 	else if (frontChecker1() == 0) {
+     rightChecker1();
+     rotateRobot(-1);
 		moveForward();
 	}
 	else if (rightChecker1() == 0){

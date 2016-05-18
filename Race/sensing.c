@@ -71,13 +71,17 @@ void correctFront() {
     drive_speed(10,10);
     pause(10);
   }    
-} 
+}
+
+void correctAngle(){
+  
+}  
 
 int frontChecker()
 {
   int result;
   int distance = ping_cm(8);
-  if (distance < 30)
+  if (distance < 40)
   {
     if (distance < 10) {
       correctBack();
