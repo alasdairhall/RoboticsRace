@@ -19,35 +19,21 @@ void phase1(){
   moveForward();
   while(!(xPos == 1 && yPos == 0)){
     print("xPos: %d, yPos: %d\n",xPos,yPos);
-    if (leftChecker() == 0) {
-		rotateRobot(-1);
+    if (leftChecker1() == 0) {
 		moveForward();
 	}
-	else if (frontChecker() == 0) {
+	else if (frontChecker1() == 0) {
 		moveForward();
 	}
-	else if (rightChecker() == 0){
-		rotateRobot(1);
+	else if (rightChecker1() == 0){
 		moveForward();
 	}
   else{
-    rotateRobot(2);
+    rotateRobot(1);
     moveForward();
   }   
 }  
-  turn(2);  
-}
-
-void blink() {
-  int i;
-  for(i = 0; i < 3; i++)
-  {
-    high(26);                                
-    pause(500);                               
-    low(26);                                  
-    pause(500);
-  }    
-  pause(1000);
+  rotateRobot(2);  
 }  
 
 int minMove(int moves[]) {

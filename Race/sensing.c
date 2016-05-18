@@ -5,6 +5,18 @@
 
 int irLeft, irRight;
 
+void blink() {
+  int i;
+  for(i = 0; i < 3; i++)
+  {
+    high(26);                                
+    pause(500);                               
+    low(26);                                  
+    pause(500);
+  }    
+  pause(1000);
+}
+
 void setSpeed(int speed)
 {
   drive_speed(speed,speed);
@@ -46,12 +58,32 @@ int getIR()
     }
 }
 
+void correctBack() {
+  while(ping_cm(8) < 14) {
+    drive_speed(-5,-5);
+  }   
+  drive_speed(0,0);
+}
+
+void correctFront() {
+  print("WHY DON'T I WORK");
+  while(ping_cm(8) > 16) {
+    drive_speed(5,5);
+  }    
+  drive_speed(0,0);
+} 
+
 int frontChecker()
 {
   int result;
   int distance = ping_cm(8);
   if (distance < 30)
   {
+    if (distance < 10) {
+      correctBack();
+    } else {
+      correctFront();
+    }           
     return 1;
   }
   else
@@ -76,3 +108,19 @@ int leftChecker()
     return val;
 }
 
+int leftChecker1() {
+  rotateRobot(-1);
+  return frontChecker();
+}
+
+int frontChecker1() {
+  rotateRobot(1);
+  return frontChecker();
+}   
+
+int rightChecker1() {
+  rotateRobot(1);
+  return frontChecker();
+}  
+
+  
