@@ -150,7 +150,8 @@ int main() {
 	//goToTarget(1,0);
   
   //setSpeed(80);
-  //phase1();
+  drive_setMaxSpeed(80);
+  phase1();
   blink();
   goToTarget(4,4);
 }

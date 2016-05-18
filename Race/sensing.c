@@ -26,11 +26,11 @@ void turn(int direction)
 {
   if (direction == -1)
   {
-    drive_goto(-26,26);
+    drive_goto(-25,26);
   }
   else if (direction == 1)
   {
-    drive_goto(26,-26);
+    drive_goto(26,-25);
   }
   else if (direction == 2)
   {
@@ -56,21 +56,21 @@ int getIR()
         freqout(1, 1, 38000);
         irRight += input(2);
     }
-}
+}  
 
 void correctBack() {
   while(ping_cm(8) < 14) {
-    drive_speed(-5,-5);
+    drive_speed(-10,-10);
+    pause(10);
   }   
-  drive_speed(0,0);
 }
 
 void correctFront() {
   print("WHY DON'T I WORK");
-  while(ping_cm(8) > 16) {
-    drive_speed(5,5);
+  while(ping_cm(8) > 14) {
+    drive_speed(10,10);
+    pause(10);
   }    
-  drive_speed(0,0);
 } 
 
 int frontChecker()
