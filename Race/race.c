@@ -1,39 +1,57 @@
 #include <stdio.h>
 #include "sensing.h"
 
-// int visited[][] = {
-// 	{-1,1,-1,-1,-1},
-// 	{-1,0,0,0,0},
-// 	{-1,0,0,0,0},
-// 	{-1,0,0,0,0},
-// 	{-1,0,0,0,0}
-// };
+int values[][] = {
+	{100,100,100,100,100},
+	{ 7 , 6 , 5 , 4 , 3 },
+	{100, 5 , 4 , 3 , 2 },
+	{100, 4 , 3 , 2 , 1 },
+	{100, 3 , 2 , 1 , 0 }
+};
 
 int orientation = 0; // 0 = North, 1 = East, 2 = South, 3 = West
 int xPos = 1, yPos = 0;
 int xTarget = 4, yTarget = 4;
 int gridSize = 123; // 60 cm in ticks
 int xTicks = 0, yTicks = 0;
+int deadEnd = 0;
+
+void checkDeadEnd(int wallNum) {
+	if(deadEnd) {
+    	if(wallNum > 1) {
+    		values[xPos][yPos] = 100;
+    	} else {
+    		deadEnd = 0;
+    	}
+    }
+}
 
 void phase1(){
   moveForward();
   while(!(xPos == 1 && yPos == 0)){
     print("xPos: %d, yPos: %d\n",xPos,yPos);
+    int noOfWalls = 0;
     if (leftChecker1() == 0) {
-     frontChecker1();
-     rightChecker1();
-     rotateRobot(2);
+    	noOfWalls = frontChecker1() + rightChecker1();
+    	checkDeadEnd(noOfWalls);
+    	rotateRobot(2);
 		moveForward();
 	}
 	else if (frontChecker1() == 0) {
-     rightChecker1();
-     rotateRobot(-1);
+		noOfWalls = 1 + rightChecker1();
+		checkDeadEnd(noOfWalls);
+	    rotateRobot(-1);
 		moveForward();
 	}
 	else if (rightChecker1() == 0){
+		checkDeadEnd(2);
 		moveForward();
 	}
   else{
+  	if(!(xPos == 4 && yPos == 4)) { // If it's at a dead end it wants to remember to not come down here, unless it is the finishing square
+  		deadEnd = 1;
+    	values[xPos][yPos] = 100;
+  	}
     rotateRobot(1);
     moveForward();
   }   
@@ -77,13 +95,13 @@ void getMoves(int moves[]) {
 	int even = orientation % 2 == 0;
 
 	if(even) {
-		moves[0] = inBoundMove(xPos,(orientation - 1),xTarget); // Different orientations will mean
-		moves[1] = inBoundMove(yPos,(1 - orientation),yTarget); // that the way the x and y pos change
-		moves[2] = inBoundMove(xPos,(1 - orientation),xTarget); // will be different
+		moves[0] = values[xPos + (orientation - 1)][yPos]; // Different orientations will mean
+		moves[1] = values[xPos][yPos + (1 - orientation)]; // that the way the x and y pos change
+		moves[2] = values[xPos + (1 - orientation)][yPos]; // will be different
 	} else {
-		moves[0] = inBoundMove(yPos,(2 - orientation),yTarget);
-		moves[1] = inBoundMove(xPos,(2 - orientation),xTarget);
-		moves[2] = inBoundMove(yPos,(orientation - 2),yTarget);
+		moves[0] = values[xPos][yPos + (2 - orientation)];
+		moves[1] = values[xPos + (2 - orientation)][yPos];
+		moves[2] = values[xPos][yPos + (orientation - 2)];
 	}
 }
 
