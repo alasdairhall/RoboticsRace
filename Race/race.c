@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "sensing.h"
 
-int values[][] = {
+int values[5][5] = {
 	{100,100,100,100,100},
 	{ 7 , 6 , 5 , 4 , 3 },
 	{100, 5 , 4 , 3 , 2 },
@@ -12,7 +12,6 @@ int values[][] = {
 int orientation = 0; // 0 = North, 1 = East, 2 = South, 3 = West
 int xPos = 1, yPos = 0;
 int xTarget = 4, yTarget = 4;
-int gridSize = 123; // 60 cm in ticks
 int xTicks = 0, yTicks = 0;
 int deadEnd = 0;
 
@@ -121,14 +120,10 @@ void rotateRobot(int rotation) {
 }
 
 void moveForward() {
-	moveForwardSquare(gridSize);
+	moveForwardSquare();
 	if(orientation % 2 == 0) {
-		//yTicks += (gridSize - orientation*gridSize);
-		//yPos = yTicks / gridSize;
 		yPos = yPos + (1 - orientation);
 	} else {
-		//xTicks += (2*gridSize - orientation*gridSize);
-		//xPos = (xTicks / gridSize) + 1;
 		xPos = xPos + (2 - orientation);
 	}
 }

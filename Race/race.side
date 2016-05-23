@@ -1,7 +1,6 @@
 race.c
 sensing.c
 sensing.h
-race.c
 >compiler=C
 >memtype=cmm main ram compact
 >optimize=-Os

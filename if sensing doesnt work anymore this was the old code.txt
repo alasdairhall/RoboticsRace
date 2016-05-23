@@ -3,7 +3,7 @@
 #include "abdrive.h"
 #include "ping.h"
 
-#define GRID_SIZE 400
+#define SQUARE_LENGTH 400
 #define SENSOR_VALUE 14
 #define MULTIPLIER 2
 #define IR_LEFT 10
@@ -61,63 +61,61 @@ int getIR()
     }
 }
 
-double calcDistance(int current, int prev) {
-  return (current - prev) * 3.25;
-}  
-
 void moveForwardSquare()
 {
-  double xDist = 0;
-  double yDist = 0;
+  double X = 0;
+  double Y = 0;
   double angle = 0;
-  double distance = 0;
+  double distanceTravelled = 0;
 
   int prevTicksLeft = 0;
   int prevTicksRight = 0;
 
   drive_getTicks(&prevTicksLeft, &prevTicksRight);
-  while(distance < GRID_SIZE) {
+  while(distanceTravelled < SQUARE_LENGTH) {
       getIR();
+      print("IR Left: %d, IR Right: %d\n", irLeft, irRight);
       int changeVal;
-      if(irLeft < SENSOR_VALUE && irRight < SENSOR_VALUE){ // Wall either side
+      if(irLeft < SENSOR_VALUE && irRight < SENSOR_VALUE){
           changeVal = (irLeft - irRight) * MULTIPLIER;
-      } else if ( irLeft < SENSOR_VALUE ) { // Wall to the left
+      } else if ( irLeft < SENSOR_VALUE ) {
           changeVal = (irLeft - IR_LEFT) * MULTIPLIER;
-      } else if ( irRight < SENSOR_VALUE ) { // Wall to the right
+      } else if ( irRight < SENSOR_VALUE ) {
           changeVal = (IR_RIGHT - irRight) * MULTIPLIER;
-      } else { // If no walls to the side, carry on as normal
+      } else {
           changeVal = 0;
       }
 
-      drive_speed(BASE_SPEED_TICKS - changeVal, BASE_SPEED_TICKS + changeVal); // Set the new drive speed with the new changeVal
+      drive_speed(BASE_SPEED_TICKS - changeVal, BASE_SPEED_TICKS + changeVal);
       
       int ticksLeft, ticksRight;
-      drive_getTicks(&ticksLeft,  &ticksRight); // get current ticks count
-      
-      // calculate distances
-      double distRight = calcDistance(ticksRight, prevTicksRight); // Distance of left wheel
-      double distLeft = calcDistance(ticksLeft, prevTicksLeft); // Distance of right wheel
-      double distCentre = (distRight + distLeft) / 2; // The average of the left and right distance
-      angle = angle + (distRight - distLeft) / ROBOT_WIDTH;
-      // update prevTicks
+      drive_getTicks(&ticksLeft,  &ticksRight);
+
+      double dRight = (ticksRight - prevTicksRight) * 3.25;
+      double dLeft = (ticksLeft - prevTicksLeft) * 3.25;
+      double dCentre = (dRight + dLeft) / 2;
+
+      angle = angle + (dRight - dLeft) / ROBOT_WIDTH;
+
+      X = X + dCentre * cos(angle);
+      Y = Y + dCentre * sin(angle);
+
+      distanceTravelled = sqrt(X*X + Y*Y);
+
       prevTicksLeft = ticksLeft;
       prevTicksRight = ticksRight;
-
-      xDist = xDist + distCentre * cos(angle);
-      yDist = yDist + distCentre * sin(angle);
-      distance = sqrt(xDist*xDist + yDist*yDist); // work out distance travelled using pythagoras
   }
   drive_speed(0,0);
 }
 
 void correct() {
-  if(ping_cm(8) < 14) { // if too close, move back
+  if(ping_cm(8) < 14) {
     while(ping_cm(8) < 14) {
       drive_speed(-10,-10);
       pause(10);
     }
   } else {
-    while(ping_cm(8) > 14) { // if too far, move forward
+    while(ping_cm(8) > 14) {
       drive_speed(10,10);
       pause(10);
     }

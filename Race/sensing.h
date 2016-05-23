@@ -10,11 +10,9 @@ void turn(int direction);
 
 int getIR();
 
-void moveForwardSquare(int length);
+void moveForwardSquare();
 
-void correctBack();
-
-void correctFront();
+void correct();
 
 int frontChecker();
 
