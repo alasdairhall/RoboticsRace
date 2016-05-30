@@ -11,7 +11,7 @@
 #define BASE_SPEED_TICKS 64
 #define ROBOT_WIDTH 105.8
 
-int irLeft, irRight; 
+int irLeft, irRight;
 
 void blink() {
   int i;
