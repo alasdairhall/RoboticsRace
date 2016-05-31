@@ -46,59 +46,41 @@ void phase1(){
   while(!(xPos == 1 && yPos == 0)){
     print("xPos: %d, yPos: %d\n",xPos,yPos);
     int noOfWalls = 0;
-    arr[xPos][yPos][(orientation+2)%4] = 0;
+    arr[xPos][yPos][(orientation+2)%4] = 1; // must be clear behind because has come from that direction
     if (leftChecker1() == 0) {
-			int front = frontChecker1();
-			int right = rightChecker1();
-
-			// if (orientation == 0) {
-			// 	arr[xPos][yPos][0] = front;
-			// 	arr[xPos][yPos][1] = right;
-			// 	arr[xPos][yPos][3] = 0;
-			// }
-			// else if (orientation == 1){
-			// 	arr[xPos][yPos][1] = front;
-			// 	arr[xPos][yPos][2] = right;
-			// 	arr[xPos][yPos][0] = 0;
-			// }
-			// else if (orientation == 2){
-			// 	arr[xPos][yPos][2] = front;
-			// 	arr[xPos][yPos][3] = right;
-			// 	arr[xPos][yPos][1] = 0;
-			// }
-			// else{
-			// 	arr[xPos][yPos][3] = front;
-			// 	arr[xPos][yPos][0] = right;
-			// 	arr[xPos][yPos][2] = 0;
-			// }
-
-			//Simplified above(kept it for now just to make it more clear.)
-			arr[xPos][yPos][orientation] = front;
-			arr[xPos][yPos][(orientation+1)%4] = right;
-			arr[xPos][yPos][(orientation+3)%4] = 0;
+    	arr[xPos][yPos][orientation] = 1
+		int front = frontChecker1();
+		arr[xPos][yPos][orientation] = (front + 1) % 2; // because we represent a wall as a 0 in the array but frontchecker returns 1 if there is a wall
+		int right = rightChecker1();		
+		arr[xPos][yPos][orientation] = (right + 1) % 2;
+    	
     	noOfWalls = front + right;
     	checkDeadEnd(noOfWalls);
     	rotateRobot(2);
 		moveForward();
 	}
 	else if (frontChecker1() == 0) {
+		arr[xPos][yPos][(orientation+3)%4] = 0;
+		arr[xPos][yPos][orientation] = 1;
 		right = rightChecker1();
+		arr[xPos][yPos][orientation] = (right + 1) % 2;
+
 		noOfWalls = 1 + right;
-		arr[xPos][yPos][orientation] = 0;
-		arr[xPos][yPos][(orientation+1)%4] = right;
-		arr[xPos][yPos][(orientation+3)%4] = 1;
 		checkDeadEnd(noOfWalls);
 	    rotateRobot(-1);
 		moveForward();
 	}
 	else if (rightChecker1() == 0){
 		arr[xPos][yPos][orientation] = 1;
-		arr[xPos][yPos][(orientation+1)%4] = 0;
-		arr[xPos][yPos][(orientation+3)%4] = 1;
+		arr[xPos][yPos][(orientation+2)%4] = 0;
+		arr[xPos][yPos][(orientation+3)%4] = 0;
 		checkDeadEnd(2);
 		moveForward();
 	}
   else{
+  		arr[xPos][yPos][orientation] = 0;
+		arr[xPos][yPos][(orientation+2)%4] = 0;
+		arr[xPos][yPos][(orientation+3)%4] = 0;
   	if(!(xPos == 4 && yPos == 4)) { // If it's at a dead end it wants to remember to not come down here, unless it is the finishing square
   		deadEnd = 1;
     	values[xPos][yPos] = 100;
@@ -180,43 +162,36 @@ void moveForward() {
 	}
 }
 
-void isClean(int walls[]) {
+void isClean(int clear[]) {
 	// Checks if the blocks around are clear or not.
 	if (arr[xPos][yPos][orientation] == -1) {
-		if (frontChecker() == 1)
-		{
-					walls[1] = 0;
+		if (frontChecker() == 1) {
+					clear[1] = 0;
 		}
+	} else if (arr[xPos][yPos][orientation] == 0) {
+			clear[1] = 0;
+	} else {
+		clear[1] = 1;
 	}
-	else if (arr[xPos][yPos][orientation] == 0) {
-			walls[1] = 0;
-	}
-	else{
-		walls[1] = 1;
-	}
+
 	if (arr[xPos][yPos][(orientation+1)%4] == -1) {
-		if (rightChecker() == 1)
-		{
-			walls[2] = 0;
+		if (rightChecker() == 1) {
+			clear[2] = 0;
 		}
+	} else if (arr[xPos][yPos][(orientation+1)%4] == 0) {
+			clear[2] = 0;
+	} else {
+		clear[2] = 1;
 	}
-	else if (arr[xPos][yPos][(orientation+1)%4] == 0) {
-			walls[2] = 0;
-	}
-	else{
-		walls[2] = 1;
-	}
-	if (arr[xPos][yPos][(orientation+3)%4] == -1){
-		if (leftChecker() == 1)
-		{
-			walls[0] = 0;
+
+	if (arr[xPos][yPos][(orientation+3)%4] == -1) {
+		if (leftChecker() == 1) {
+			clear[0] = 0;
 		}
-	}
-	else if (arr[xPos][yPos][(orientation+3)%4] == 0) {
-			walls[0] = 0;
-	}
-	else{
-		walls[0] = 1;
+	} else if (arr[xPos][yPos][(orientation+3)%4] == 0) {
+			clear[0] = 0;
+	} else {
+		clear[0] = 1;
 	}
 	//the else blocks are excess. You can get rid of it if you want, just put it there to make it more clear.
 }
